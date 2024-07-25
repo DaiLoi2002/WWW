@@ -108,7 +108,7 @@
 						                   <p class="title">${o.title}</p>
 						                    <p class="name"><a href="detail?pid=${o.id}">${o.name}</a></p>
 						                   
-						                    <p class="price"><fmt:formatNumber value="${o.price}" type="number"  groupingUsed="true" />đ</p>
+						                    <p class="price"><fmt:formatNumber value="${o.price}" type="number"  groupingUsed="true" /> VND</p>
 						                </div>
 						                <div class="product-hover">
 						                    <ul>

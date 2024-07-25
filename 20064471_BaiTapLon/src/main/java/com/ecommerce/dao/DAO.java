@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ecommerce.database.Database;
+import com.ecommerce.entity.Account;
 import com.ecommerce.entity.Category;
 import com.ecommerce.entity.Product;
 
@@ -53,6 +54,33 @@ public class DAO {
     	   conn = new Database().getConnection();
     	   ps=conn.prepareStatement(query);
     	   ps.setString(1, cid);
+    	   rs = ps.executeQuery();
+    	   while (rs.next()) {
+			list.add(new Product(rs.getInt(1),
+					rs.getString(2),
+					rs.getString(3),
+					rs.getDouble(4),
+					rs.getString(5),
+					rs.getString(6)
+					));
+			
+		}
+    	   
+	} catch (Exception e) {
+		// TODO: handle exception
+	}
+        
+        return list;
+    }
+	
+public List<Product> getsearchBYName(String txtSearch) {
+		
+		List<Product> list = new ArrayList<Product>();
+        String query = "select * from product where name like ? ";
+       try {
+    	   conn = new Database().getConnection();
+    	   ps=conn.prepareStatement(query);
+    	   ps.setString(1,"%" + txtSearch + "%");
     	   rs = ps.executeQuery();
     	   while (rs.next()) {
 			list.add(new Product(rs.getInt(1),
@@ -152,7 +180,30 @@ public List<Category> getAllCategory() {
 	
 	
 	
+	//Account DAO
+public Account login(String user,String pass) {
+	String query="select * from account where user =? and pass=?";
+	try {
+		  conn = new Database().getConnection();
+   	   ps=conn.prepareStatement(query);
+   	   
+   	   ps.setString(1, user);
+   	   ps.setString(2, pass);
+   	   
+   	   rs = ps.executeQuery();
+   	   while(rs.next()) {
+   		   return new Account(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getInt(4),rs.getInt(5));
+   	   }
+		
+		
+		
+		
+	} catch (Exception e) {
+		// TODO: handle exception
+	}
 	
+	return null;
+}
 	
 	
 	

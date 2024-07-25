@@ -32,9 +32,9 @@
 
                         <ul>
 
-                            <li><a href=""><i class="fa fa-user"></i> Login</a></li>
+                            <li><a href="Login&Register.jsp"><i class="fa fa-user"></i> Login</a></li>
 
-                            <li><a href=""><i class="fa fa-lock"></i> Register</a></li>
+                            
 
                         </ul>
 
@@ -71,11 +71,11 @@
 
                     <div class="search-form">
 
-                        <form class="navbar-form" role="search">
+                        <form action="search" method="post" class="navbar-form" role="search">
 
                             <div class="form-group">
 
-                              <input type="text" class="form-control" placeholder="What do you need...">
+                              <input type="text" value="${txtS}" name="txt" class="form-control" placeholder="What do you need...">
 
                             </div>
 
