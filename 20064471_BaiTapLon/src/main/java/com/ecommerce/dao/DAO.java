@@ -193,19 +193,49 @@ public Account login(String user,String pass) {
    	   rs = ps.executeQuery();
    	   while(rs.next()) {
    		   return new Account(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getInt(4),rs.getInt(5));
-   	   }
-		
-		
-		
-		
+   	   }	
 	} catch (Exception e) {
 		// TODO: handle exception
 	}
 	
 	return null;
 }
+public void SignUp(String user,String pass) {
+	String query="INSERT INTO account (user, pass, isSell, isAdmin) VALUES (?, ?, 0, 0);";
+	try {
+		conn = new Database().getConnection();
+   	   ps=conn.prepareStatement(query);
+   	   ps.setString(1, user);
+   	   ps.setString(2, pass);
+   	   ps.executeUpdate();
+   	   
+	} catch (Exception e) {
+		// TODO: handle exception
+		e.printStackTrace();
+	}
 	
 	
+}
+public Account checkAcountExit(String user) {
+	String query="select * from account where user =?";
+	try {
+		  conn = new Database().getConnection();
+   	   ps=conn.prepareStatement(query);
+   	   
+   	   ps.setString(1, user);
+
+   	   
+   	   rs = ps.executeQuery();
+   	   while(rs.next()) {
+   		   return new Account(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getInt(4),rs.getInt(5));
+   	   }	
+	} catch (Exception e) {
+		// TODO: handle exception
+		e.printStackTrace();
+	}
+	
+	return null;
+}
 	
 	
 	public static void main(String[] args) {

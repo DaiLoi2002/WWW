@@ -40,11 +40,11 @@
     
     <div class="registration form">
       <header>Signup</header>
-      <form action="#">
-        <input type="text" placeholder="Enter your email">
-        <input type="password" placeholder="Create a password">
-        <input type="password" placeholder="Confirm your password">
-        <input type="button" class="button" value="Signup">
+      <form action="signup" method="post">
+        <input type="text" name="user" placeholder="Enter your email">
+        <input type="password" name="pass" placeholder="Create a password">
+        <input type="password" name="repass" placeholder="Confirm your password">
+        <input type="submit" class="button" value="Signup">
       </form>
       <div class="signup">
         <span class="signup">Already have an account?
