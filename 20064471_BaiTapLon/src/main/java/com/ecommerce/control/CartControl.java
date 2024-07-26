@@ -43,6 +43,8 @@ public class CartControl extends HttpServlet {
         try {
             // Gọi phương thức DAO để lấy giỏ hàng
             cart = dao.getCartByUserId(userId);
+            
+           
         } catch (SQLException e) {
             e.printStackTrace();
             // Xử lý lỗi, có thể chuyển hướng đến trang lỗi hoặc hiển thị thông báo lỗi
@@ -54,11 +56,24 @@ public class CartControl extends HttpServlet {
         if (cart == null) {
             // Nếu không tìm thấy giỏ hàng, có thể chuyển hướng đến trang thông báo hoặc hiển thị thông báo
             request.setAttribute("message", "No cart found for user.");
-            request.getRequestDispatcher("message.jsp").forward(request, response);
+            request.getRequestDispatcher("mess.jsp").forward(request, response);
+            
         } else {
-            // Đưa đối tượng cart vào request để sử dụng trong JSP
-            request.setAttribute("cart", cart);
-            request.getRequestDispatcher("CartShop.jsp").forward(request, response);
+        	
+        	if (accountID != null) {
+                // Lưu đối tượng cart vào session
+                session.setAttribute("cart123", cart);
+
+                // Đặt đối tượng cart vào request để chuyển tiếp
+                request.setAttribute("cart", cart);
+
+                // Chuyển tiếp đến trang CartShop.jsp
+                request.getRequestDispatcher("CartShop.jsp").forward(request, response);
+            } else {
+                // Nếu accountID là null, chuyển hướng đến Login&Register.jsp
+                response.sendRedirect("Login&Register.jsp");
+            }
+        	
         }
     }
 

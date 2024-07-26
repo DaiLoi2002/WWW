@@ -370,6 +370,30 @@ public void deleteCartDetail(int cartDetailId) throws SQLException {
 }
 
 
+public void updateCartTotalAll(int cartId) throws SQLException {
+    // SQL query to update the total amount in the Cart table
+    String updateTotalQuery = 
+        "UPDATE Cart SET totalAll = (SELECT COALESCE(SUM(totalprice), 0) FROM CartDetail WHERE CartID = ?) WHERE CartID = ?";
+
+    try (Connection conn = new Database().getConnection();
+         PreparedStatement ps = conn.prepareStatement(updateTotalQuery)) {
+        
+        // Set the cartId for the query
+        ps.setInt(1, cartId);
+        ps.setInt(2, cartId);
+        
+        // Execute the update
+        ps.executeUpdate();
+        System.out.println("Cart total updated successfully.");
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+        throw e; // Propagate the exception to the caller
+    }
+}
+
+
+
 	
 	
 	public static void main(String[] args) throws SQLException {

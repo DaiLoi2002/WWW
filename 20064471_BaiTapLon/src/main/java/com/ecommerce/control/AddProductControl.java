@@ -11,53 +11,60 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.ecommerce.dao.DAO;
+import com.ecommerce.entity.Cart;
 import com.ecommerce.entity.Product;
-
-/**
- * Servlet implementation class AddProductControl
- */
 @WebServlet("/addproduct")
 public class AddProductControl extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+    private static final long serialVersionUID = 1L;
+
     public AddProductControl() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-		
-	}
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.getWriter().append("Served at: ").append(request.getContextPath());
+    }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		DAO dao=new DAO();
-		HttpSession session = request.getSession();
-//        int userId, int productId, int quantity
-		Integer userId=(Integer) session.getAttribute("accountID");
-		Integer productId=(Integer) session.getAttribute("productID");
-		String quantity=request.getParameter("quantity");
-		Integer intQuantity= Integer.parseInt(quantity);
-		try {
-			dao.addToCart(userId, productId, intQuantity);
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		 request.getRequestDispatcher("cart").forward(request, response);
-	}
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        DAO dao = new DAO();
+        HttpSession session = request.getSession();
 
+        // Retrieve session attributes and parameters
+        Integer userId = (Integer) session.getAttribute("accountID");
+        Integer productId = (Integer) session.getAttribute("productID");
+        String quantityStr = request.getParameter("quantity");
+
+        // Validate and parse quantity
+        Integer intQuantity = null;
+        try {
+            if (quantityStr != null && !quantityStr.isEmpty()) {
+                intQuantity = Integer.parseInt(quantityStr);
+            }
+        } catch (NumberFormatException e) {
+            // Handle invalid quantity format
+            request.setAttribute("errorMessage", "Invalid quantity format");
+            request.getRequestDispatcher("Login&Register.jsp").forward(request, response);
+            return;
+        }
+
+        // Check for null values
+        if (userId == null || productId == null || intQuantity == null) {
+            request.setAttribute("errorMessage", "Missing required data");
+            request.getRequestDispatcher("Login&Register.jsp").forward(request, response);
+            return;
+        }
+
+        try {
+            // Add to cart
+            dao.addToCart(userId, productId, intQuantity);
+            
+            // Redirect to the cart page
+            response.sendRedirect("cart");
+        } catch (SQLException e) {
+            // Log the error and notify the user
+            e.printStackTrace(); // Consider using a logging framework
+            request.setAttribute("errorMessage", "Database error occurred");
+            request.getRequestDispatcher("Login&Register.jsp").forward(request, response);
+        }
+    }
 }
