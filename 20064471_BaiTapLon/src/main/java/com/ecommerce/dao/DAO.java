@@ -293,17 +293,109 @@ public Cart getCartByUserId(String userId) throws SQLException {
     return cart;
 }
 
+public void addToCart(int userId, int productId, int quantity) throws SQLException {
+   
+
+    try {
+    	conn = new Database().getConnection();
+    	   
+        // Kiểm tra xem người dùng đã có giỏ hàng chưa
+        String checkCartQuery = "SELECT CartID FROM Cart WHERE uID = ?";
+        ps = conn.prepareStatement(checkCartQuery);
+        ps.setInt(1, userId);
+        rs = ps.executeQuery();
+
+        int cartId;
+        if (rs.next()) {
+            cartId = rs.getInt("CartID");
+        } else {
+            // Nếu chưa có giỏ hàng, tạo giỏ hàng mới
+            String createCartQuery = "INSERT INTO Cart (uID, totalAll) VALUES (?, 0)";
+            ps = conn.prepareStatement(createCartQuery, PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, userId);
+            ps.executeUpdate();
+            rs = ps.getGeneratedKeys();
+            rs.next();
+            cartId = rs.getInt(1);
+        }
+
+        // Lấy giá sản phẩm từ bảng Products
+        String getPriceQuery = "SELECT Price FROM product WHERE id = ?";
+        ps = conn.prepareStatement(getPriceQuery);
+        ps.setInt(1, productId);
+        rs = ps.executeQuery();
+
+        float unitPrice = 0;
+        if (rs.next()) {
+            unitPrice = rs.getFloat("Price");
+        }
+
+        // Thêm sản phẩm vào chi tiết giỏ hàng
+        String addProductQuery = "INSERT INTO CartDetail (CartID, id, quantity, unitprice, totalprice) VALUES (?, ?, ?, ?, ?)";
+        ps = conn.prepareStatement(addProductQuery);
+        ps.setInt(1, cartId);
+        ps.setInt(2, productId);
+        ps.setInt(3, quantity);
+        ps.setFloat(4, unitPrice);
+        ps.setFloat(5, unitPrice * quantity);
+        ps.executeUpdate();
+
+        // Cập nhật tổng tiền trong giỏ hàng
+        String updateTotalQuery = "UPDATE Cart SET totalAll = (SELECT SUM(totalprice) FROM CartDetail WHERE CartID = ?) WHERE CartID = ?";
+        ps = conn.prepareStatement(updateTotalQuery);
+        ps.setInt(1, cartId);
+        ps.setInt(2, cartId);
+        ps.executeUpdate();
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        conn.close();
+    }
+}
+
 
 	
 	
 	public static void main(String[] args) throws SQLException {
 		DAO dao=new DAO();
+		
 		 String userId = "5";
 		
 		List<Product> list=dao.getAllProducts();
 		List<Product> listnew=dao.get4Productsnew();
 		List<Category> listCategory=dao.getAllCategory();
 		List<Product> listProductsBYCID=dao.getProductsBYCID("5");
+		
+		
+		
+		
+		System.out.println("-----------------Test thêm sản ----------------------");
+
+		// Xác định dữ liệu mẫu để thêm vào giỏ hàng
+	    int user = 1; // ID người dùng (thay đổi theo nhu cầu)
+	    int productId = 7; // ID sản phẩm (thay đổi theo nhu cầu)
+	    int quantity = 3; // Số lượng sản phẩm
+
+	    try {
+	        // Thực hiện thêm sản phẩm vào giỏ hàng
+	        dao.addToCart(user, productId, quantity);
+	        System.out.println("Sản phẩm đã được thêm vào giỏ hàng thành công.");
+	    } catch (SQLException e) {
+	        System.err.println("Không thể thêm sản phẩm vào giỏ hàng.");
+	        e.printStackTrace();
+	    }
+		
+		System.out.println("-----------------Test thêm sản ----------------------");
+		System.out.println("-----------------Test thêm sản ----------------------");
+	
+		
+		
+		
+		
+		
+		
+		
 		
 		 try {
 	            // Gọi phương thức getCartByUserId để lấy giỏ hàng

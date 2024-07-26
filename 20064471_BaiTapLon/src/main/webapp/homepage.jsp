@@ -114,9 +114,8 @@
 						                </div>
 						                <div class="product-hover">
 						                    <ul>
-						                        <li><a href=""><i class="fa fa-cart-arrow-down"></i></a></li>
-						                        <li><a href=""><i class="fa fa-arrows-h"></i></a></li>
-						                        <li><a href=""><i class="fa fa-heart-o"></i></a></li>
+						                        <li><a href=" "><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>
+						                 
 						                    </ul>
 						                </div>
 						            </div>

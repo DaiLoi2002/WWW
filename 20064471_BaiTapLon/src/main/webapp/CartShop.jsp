@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,7 +50,7 @@
                                     </div>
                                     <div class="col-xs-6">
                                         <div class="col-xs-6 text-right">
-                                            <h6><strong>${detail.unitPrice} <span class="text-muted">x</span></strong></h6>
+                                            <h6><strong><fmt:formatNumber value="${detail.unitPrice}" type="number"  groupingUsed="true" />VND<%-- ${detail.unitPrice} --%> <span class="text-muted">x</span></strong></h6>
                                         </div>
                                         <div class="col-xs-4">
                                             <input type="text" class="form-control input-sm" value="${detail.quantity}" readonly>
@@ -83,7 +84,7 @@
                     <div class="panel-footer">
                         <div class="row text-center">
                             <div class="col-xs-9">
-                                <h4 class="text-right">Total <strong>$<c:out value="${cart.totalAll}" /></strong></h4>
+                                <h4 class="text-right">Total <strong><fmt:formatNumber value="${cart.totalAll}" type="number"  groupingUsed="true" /><%-- $<c:out value="${cart.totalAll}" /> --%>VND</strong></h4>
                             </div>
                             <div class="col-xs-3">
                                 <button type="button" class="btn btn-success btn-block">
