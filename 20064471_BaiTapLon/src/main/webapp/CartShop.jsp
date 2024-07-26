@@ -46,6 +46,7 @@
                                     </div>
                                     <div class="col-xs-4">
                                         <h4 class="product-name"><strong>${detail.productName}</strong></h4>
+                                        <h4 class="product-name"><strong>Cart Detail ID:${detail.cartDetail_Id}</strong></h4>
                                         <h4><small>Product Code:${detail.productId}</small></h4>
                                     </div>
                                     <div class="col-xs-6">
@@ -56,9 +57,13 @@
                                             <input type="text" class="form-control input-sm" value="${detail.quantity}" readonly>
                                         </div>
                                         <div class="col-xs-2">
-                                            <button type="button" class="btn btn-link btn-xs">
-                                                <span class="glyphicon glyphicon-trash"> </span>
-                                            </button>
+                                            <form action="deleteServlet" method="post" style="display:inline;">
+										        <!-- Thay đổi `productId` thành giá trị bạn muốn gửi -->
+										        <input type="hidden" name="productId" value="${detail.cartDetail_Id}">
+										        <button type="submit" class="btn btn-link btn-xs">
+										            <span class="glyphicon glyphicon-trash"></span>
+										        </button>
+										    </form>
                                         </div>
                                     </div>
                                 </div>

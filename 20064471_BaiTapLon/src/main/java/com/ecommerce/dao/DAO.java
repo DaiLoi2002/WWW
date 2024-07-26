@@ -353,97 +353,133 @@ public void addToCart(int userId, int productId, int quantity) throws SQLExcepti
         conn.close();
     }
 }
+public void deleteCartDetail(int cartDetailId) throws SQLException {
+    String query = "DELETE FROM CartDetail WHERE cartDetail_ID = ?";
+    try (Connection conn = new Database().getConnection();
+         PreparedStatement ps = conn.prepareStatement(query)) {
+        
+        ps.setInt(1, cartDetailId);
+        ps.executeUpdate();
+        System.out.println("Xoá thành Công ");
+        
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+        throw e;
+    }
+}
 
 
 	
 	
 	public static void main(String[] args) throws SQLException {
 		DAO dao=new DAO();
+		 //String userId = "5";
+		   int cartDetailIdToDelete = 25; 
+//		List<Product> list=dao.getAllProducts();
+//		List<Product> listnew=dao.get4Productsnew();
+//		List<Category> listCategory=dao.getAllCategory();
+//		List<Product> listProductsBYCID=dao.getProductsBYCID("5");
+		System.out.println("----------------- xoa ----------------------");
 		
-		 String userId = "5";
-		
-		List<Product> list=dao.getAllProducts();
-		List<Product> listnew=dao.get4Productsnew();
-		List<Category> listCategory=dao.getAllCategory();
-		List<Product> listProductsBYCID=dao.getProductsBYCID("5");
-		
-		
-		
-		
-		System.out.println("-----------------Test thêm sản ----------------------");
-
-		// Xác định dữ liệu mẫu để thêm vào giỏ hàng
-	    int user = 1; // ID người dùng (thay đổi theo nhu cầu)
-	    int productId = 7; // ID sản phẩm (thay đổi theo nhu cầu)
-	    int quantity = 3; // Số lượng sản phẩm
-
-	    try {
-	        // Thực hiện thêm sản phẩm vào giỏ hàng
-	        dao.addToCart(user, productId, quantity);
-	        System.out.println("Sản phẩm đã được thêm vào giỏ hàng thành công.");
-	    } catch (SQLException e) {
-	        System.err.println("Không thể thêm sản phẩm vào giỏ hàng.");
-	        e.printStackTrace();
-	    }
-		
-		System.out.println("-----------------Test thêm sản ----------------------");
-		System.out.println("-----------------Test thêm sản ----------------------");
-	
-		
-		
-		
-		
-		
-		
-		
-		
-		 try {
-	            // Gọi phương thức getCartByUserId để lấy giỏ hàng
-	            Cart cart = dao.getCartByUserId(userId);
+		  try {
 	            
-	            // Kiểm tra và hiển thị thông tin về giỏ hàng
-	            if (cart != null) {
-	                System.out.println("Cart ID: " + cart.getCartId());
-	                System.out.println("User ID: " + cart.getUserID());
-	                System.out.println("Total Amount: " + cart.getTotalAll());
-
-	                // Hiển thị thông tin chi tiết giỏ hàng (nếu có)
-	                System.out.println("Cart Details:");
-	                for (CartDetail detail : cart.getCartDetails()) {
-	                    System.out.println("Detail ID: " + detail.getCartDetail_Id());
-	                    System.out.println("Product ID: " + detail.getProductId());
-	                    System.out.println("Quantity: " + detail.getQuantity());
-	                    System.out.println("Unit Price: " + detail.getUnitPrice());
-	                    System.out.println("Total Price: " + detail.getTotalPrice());
-	                    System.out.println("Product Name: " + detail.getProductName());
-	                    System.out.println("Image URL: " + detail.getImgURL());
-	                    System.out.println("------------");
-	                }
-	            } else {
-	                System.out.println("No cart found for user ID: " + userId);
-	            }
+	           
+	            
+	            // Gọi phương thức xóa chi tiết giỏ hàng
+	            dao.deleteCartDetail(cartDetailIdToDelete);
+	            
+	            
+	            // In thông tin chi tiết giỏ hàng sau khi xóa
+	          
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        }
+	    
 		
 		
-		for(Product o:list) {
-			System.out.println(o);
-		}
-		System.out.println("----------------------");
-		for(Category o:listCategory) {
-			System.out.println(o);
-		}
-		System.out.println("----------------------");
-		for(Product o:listnew) {
-			System.out.println(o);
-		}
-		System.out.println("---------ByID-------------");
-		for(Product o:listProductsBYCID) {
-			System.out.println(o);
-		}
-		System.out.println("---------- CartDetail------------");
+		
+		System.out.println("-----------------xoa ----------------------");
 		
 		
+//		
+//		
+//		
+//		
+//		System.out.println("-----------------Test thêm sản ----------------------");
+//
+//		// Xác định dữ liệu mẫu để thêm vào giỏ hàng
+//	    int user = 1; // ID người dùng (thay đổi theo nhu cầu)
+//	    int productId = 7; // ID sản phẩm (thay đổi theo nhu cầu)
+//	    int quantity = 3; // Số lượng sản phẩm
+//
+//	    try {
+//	        // Thực hiện thêm sản phẩm vào giỏ hàng
+//	        dao.addToCart(user, productId, quantity);
+//	        System.out.println("Sản phẩm đã được thêm vào giỏ hàng thành công.");
+//	    } catch (SQLException e) {
+//	        System.err.println("Không thể thêm sản phẩm vào giỏ hàng.");
+//	        e.printStackTrace();
+//	    }
+//		
+//		System.out.println("-----------------Test thêm sản ----------------------");
+//		System.out.println("-----------------Test thêm sản ----------------------");
+//	
+//		
+//		
+//		
+//		
+//		
+//		
+//		
+//		
+////		 try {
+////	            // Gọi phương thức getCartByUserId để lấy giỏ hàng
+////	            Cart cart = dao.getCartByUserId(userId);
+////	            
+////	            // Kiểm tra và hiển thị thông tin về giỏ hàng
+////	            if (cart != null) {
+////	                System.out.println("Cart ID: " + cart.getCartId());
+////	                System.out.println("User ID: " + cart.getUserID());
+////	                System.out.println("Total Amount: " + cart.getTotalAll());
+////
+////	                // Hiển thị thông tin chi tiết giỏ hàng (nếu có)
+////	                System.out.println("Cart Details:");
+////	                for (CartDetail detail : cart.getCartDetails()) {
+////	                    System.out.println("Detail ID: " + detail.getCartDetail_Id());
+////	                    System.out.println("Product ID: " + detail.getProductId());
+////	                    System.out.println("Quantity: " + detail.getQuantity());
+////	                    System.out.println("Unit Price: " + detail.getUnitPrice());
+////	                    System.out.println("Total Price: " + detail.getTotalPrice());
+////	                    System.out.println("Product Name: " + detail.getProductName());
+////	                    System.out.println("Image URL: " + detail.getImgURL());
+////	                    System.out.println("------------");
+////	                }
+////	            } else {
+////	                System.out.println("No cart found for user ID: " + userId);
+////	            }
+////	        } catch (SQLException e) {
+////	            e.printStackTrace();
+////	        }
+//		
+//		
+//		for(Product o:list) {
+//			System.out.println(o);
+//		}
+//		System.out.println("----------------------");
+//		for(Category o:listCategory) {
+//			System.out.println(o);
+//		}
+//		System.out.println("----------------------");
+//		for(Product o:listnew) {
+//			System.out.println(o);
+//		}
+//		System.out.println("---------ByID-------------");
+//		for(Product o:listProductsBYCID) {
+//			System.out.println(o);
+//		}
+//		System.out.println("---------- CartDetail------------");
+//		
+//		
 	}
 }

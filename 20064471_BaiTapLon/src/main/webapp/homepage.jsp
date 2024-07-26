@@ -112,12 +112,7 @@
 						                   
 						                    <p class="price"><fmt:formatNumber value="${o.price}" type="number"  groupingUsed="true" /> VND</p>
 						                </div>
-						                <div class="product-hover">
-						                    <ul>
-						                        <li><a href=" "><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>
-						                 
-						                    </ul>
-						                </div>
+						               
 						            </div>
 						        </div>
 						    </div>
