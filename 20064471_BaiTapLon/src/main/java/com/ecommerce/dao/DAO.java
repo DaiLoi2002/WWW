@@ -391,7 +391,27 @@ public void updateCartTotalAll(int cartId) throws SQLException {
         throw e; // Propagate the exception to the caller
     }
 }
+public void updateToTalprice(String cartDetailId,String quantityStr) throws SQLException {
+    // SQL query to update the total amount in the Cart table
+    String updateToTal = 
+        "UPDATE CartDetail SET quantity = ?, totalprice = quantity * unitprice WHERE cartDetail_ID = ?";
 
+    try (Connection conn = new Database().getConnection();
+         PreparedStatement ps = conn.prepareStatement(updateToTal)) {
+        
+        // Set the cartId for the query
+        ps.setString(2, cartDetailId);
+        ps.setString(1, quantityStr);
+        
+        // Execute the update
+        ps.executeUpdate();
+        System.out.println("Cart totalprice updated successfully.");
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+        throw e; // Propagate the exception to the caller
+    }
+}
 
 
 	

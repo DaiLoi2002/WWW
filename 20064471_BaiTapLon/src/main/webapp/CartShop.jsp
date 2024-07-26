@@ -16,6 +16,35 @@
             margin-left: auto;
             margin-right: auto;
         }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        .input-group .form-control {
+            border-radius: 0;
+        }
+        .input-group .btn {
+            border: none;
+            border-radius: 0;
+            padding: 0.5rem;
+        }
+        .input-group .input-group-btn {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        .input-group .input-group-btn .btn {
+            border-radius: 0;
+            border: 1px solid #ccc;
+            border-left: none;
+        }
+        .input-group .input-group-btn .btn:first-child {
+            border-right: 1px solid #ccc;
+        }
+        .input-group .input-group-btn .btn:last-child {
+            border-left: none;
+        }
     </style>
 </head>
 <body>
@@ -51,19 +80,24 @@
                                     </div>
                                     <div class="col-xs-6">
                                         <div class="col-xs-6 text-right">
-                                            <h6><strong><fmt:formatNumber value="${detail.unitPrice}" type="number"  groupingUsed="true" />VND<%-- ${detail.unitPrice} --%> <span class="text-muted">x</span></strong></h6>
+                                            <h6><strong><fmt:formatNumber value="${detail.unitPrice}" type="number" groupingUsed="true" />VND</strong></h6>
                                         </div>
                                         <div class="col-xs-4">
-                                            <input type="text" class="form-control input-sm" value="${detail.quantity}" readonly>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control input-sm" value="${detail.quantity}" id="quantityInput-${detail.cartDetail_Id}">
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-outline-secondary" type="button" id="increment-${detail.cartDetail_Id}" data-id="${detail.cartDetail_Id}">+</button>
+                                                    <button class="btn btn-outline-secondary" type="button" id="decrement-${detail.cartDetail_Id}" data-id="${detail.cartDetail_Id}">-</button>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-xs-2">
                                             <form action="deleteServlet" method="post" style="display:inline;">
-										        <!-- Thay đổi `productId` thành giá trị bạn muốn gửi -->
-										        <input type="hidden" name="productId" value="${detail.cartDetail_Id}">
-										        <button type="submit" class="btn btn-link btn-xs">
-										            <span class="glyphicon glyphicon-trash"></span>
-										        </button>
-										    </form>
+                                                <input type="hidden" name="productId" value="${detail.cartDetail_Id}">
+                                                <button type="submit" class="btn btn-link btn-xs">
+                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -75,9 +109,7 @@
                                         <h6 class="text-right">Added items?</h6>
                                     </div>
                                     <div class="col-xs-3">
-                                        <button type="button" class="btn btn-default btn-sm btn-block">
-                                            Update cart
-                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm btn-block" onclick="updateCart()">Update cart</button>
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +121,7 @@
                     <div class="panel-footer">
                         <div class="row text-center">
                             <div class="col-xs-9">
-                                <h4 class="text-right">Total <strong><fmt:formatNumber value="${cart.totalAll}" type="number"  groupingUsed="true" /><%-- $<c:out value="${cart.totalAll}" /> --%>VND</strong></h4>
+                                <h4 class="text-right">Total <strong><fmt:formatNumber value="${cart.totalAll}" type="number" groupingUsed="true" />VND</strong></h4>
                             </div>
                             <div class="col-xs-3">
                                 <button type="button" class="btn btn-success btn-block">
@@ -102,5 +134,49 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var quantityInputs = document.querySelectorAll('input[id^="quantityInput"]');
+            quantityInputs.forEach(function(input) {
+                var id = input.id.replace('quantityInput-', '');
+                var incrementButton = document.getElementById('increment-' + id);
+                var decrementButton = document.getElementById('decrement-' + id);
+                
+                if (incrementButton && decrementButton) {
+                    incrementButton.addEventListener('click', function() {
+                        var newValue = parseInt(input.value) + 1;
+                        input.value = newValue;
+                        sendUpdateRequest(id, newValue);
+                    });
+
+                    decrementButton.addEventListener('click', function() {
+                        var newValue = Math.max(0, parseInt(input.value) - 1);
+                        input.value = newValue;
+                        sendUpdateRequest(id, newValue);
+                    });
+                }
+            });
+        });
+
+        function sendUpdateRequest(id, quantity) {
+            $.ajax({
+                url: 'updateQuantityServlet',
+                type: 'POST',
+                data: {
+                    cartDetailId: id,
+                    quantity: quantity
+                },
+                success: function(response) {
+                    // Xử lý thành công, ví dụ: cập nhật giao diện hoặc thông báo
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi
+                }
+            });
+        }
+
+        
+    </script>
 </body>
 </html>
