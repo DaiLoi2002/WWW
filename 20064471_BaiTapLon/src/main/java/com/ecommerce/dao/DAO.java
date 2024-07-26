@@ -3,11 +3,17 @@ package com.ecommerce.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+import com.ecommerce.control.CartControl;
 import com.ecommerce.database.Database;
 import com.ecommerce.entity.Account;
+import com.ecommerce.entity.Cart;
+import com.ecommerce.entity.CartDetail;
 import com.ecommerce.entity.Category;
 import com.ecommerce.entity.Product;
 
@@ -236,14 +242,98 @@ public Account checkAcountExit(String user) {
 	
 	return null;
 }
+
+
+
+//DAO CART
+public Cart getCartByUserId(String userId) throws SQLException {
+    String query = "SELECT CartID, totalAll FROM Cart WHERE uID = ?";
+    Cart cart = null;
+    
+    try (Connection conn = new Database().getConnection();
+         PreparedStatement ps = conn.prepareStatement(query)) {
+        
+        int uID = Integer.parseInt(userId);
+        ps.setInt(1, uID);
+        
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                int cartId = rs.getInt("CartID");
+                
+                String cid = String.valueOf(cartId);
+                float totalAll = rs.getFloat("totalAll");
+                
+                cart = new Cart(cid, userId, totalAll);
+                
+                // Retrieve cart details
+                String cartDetailQuery = "SELECT cd.cartDetail_ID, cd.id, cd.quantity, cd.unitprice, cd.totalprice, p.name, p.image FROM CartDetail cd JOIN product p ON cd.id = p.id WHERE cd.CartID = ?";
+                try (PreparedStatement psDetail = conn.prepareStatement(cartDetailQuery)) {
+                    psDetail.setInt(1, cartId);
+                    try (ResultSet rsDetail = psDetail.executeQuery()) {
+                        while (rsDetail.next()) {
+                            int cartDetailId = rsDetail.getInt("cartDetail_ID");
+                            int productId = rsDetail.getInt("id");
+                            int quantity = rsDetail.getInt("quantity");
+                            float unitPrice = rsDetail.getFloat("unitprice");
+                            float totalPrice = rsDetail.getFloat("totalprice");
+                            String productName = rsDetail.getString("name");
+                            String imgURL = rsDetail.getString("image");
+                            
+                            CartDetail cartDetail = new CartDetail(cartDetailId, cid, productId, quantity, unitPrice, totalPrice, productName, imgURL);
+                            cart.addCartDetail(cartDetail);
+                        }
+                    }
+                }
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    
+    return cart;
+}
+
+
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		DAO dao=new DAO();
+		 String userId = "5";
+		
 		List<Product> list=dao.getAllProducts();
 		List<Product> listnew=dao.get4Productsnew();
 		List<Category> listCategory=dao.getAllCategory();
 		List<Product> listProductsBYCID=dao.getProductsBYCID("5");
+		
+		 try {
+	            // Gọi phương thức getCartByUserId để lấy giỏ hàng
+	            Cart cart = dao.getCartByUserId(userId);
+	            
+	            // Kiểm tra và hiển thị thông tin về giỏ hàng
+	            if (cart != null) {
+	                System.out.println("Cart ID: " + cart.getCartId());
+	                System.out.println("User ID: " + cart.getUserID());
+	                System.out.println("Total Amount: " + cart.getTotalAll());
+
+	                // Hiển thị thông tin chi tiết giỏ hàng (nếu có)
+	                System.out.println("Cart Details:");
+	                for (CartDetail detail : cart.getCartDetails()) {
+	                    System.out.println("Detail ID: " + detail.getCartDetail_Id());
+	                    System.out.println("Product ID: " + detail.getProductId());
+	                    System.out.println("Quantity: " + detail.getQuantity());
+	                    System.out.println("Unit Price: " + detail.getUnitPrice());
+	                    System.out.println("Total Price: " + detail.getTotalPrice());
+	                    System.out.println("Product Name: " + detail.getProductName());
+	                    System.out.println("Image URL: " + detail.getImgURL());
+	                    System.out.println("------------");
+	                }
+	            } else {
+	                System.out.println("No cart found for user ID: " + userId);
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+		
 		
 		for(Product o:list) {
 			System.out.println(o);
@@ -256,9 +346,12 @@ public Account checkAcountExit(String user) {
 		for(Product o:listnew) {
 			System.out.println(o);
 		}
-		System.out.println("----------------------");
+		System.out.println("---------ByID-------------");
 		for(Product o:listProductsBYCID) {
 			System.out.println(o);
 		}
+		System.out.println("---------- CartDetail------------");
+		
+		
 	}
 }

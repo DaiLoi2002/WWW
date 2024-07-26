@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.ecommerce.dao.DAO;
 import com.ecommerce.entity.Account;
@@ -42,6 +43,16 @@ public class LoginControl extends HttpServlet {
 			request.setAttribute("mess","Incorrect username or password.");
 			request.getRequestDispatcher("Login&Register.jsp").forward(request, response);
 		}else {
+			
+			HttpSession session =request.getSession();
+			session.setAttribute("accountID",a.getId());
+			session.setAttribute("acc",a);
+			
+			
+			
+			
+		//	session.setMaxInactiveInterval(10);
+			
 			response.sendRedirect("HomeControl");
 		}
 		

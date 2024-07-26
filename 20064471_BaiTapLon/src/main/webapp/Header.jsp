@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
   <div class="top-bar">
 
         <div class="container">
@@ -11,36 +14,36 @@
                     <div class="social pull-left">
 
                         <ul>
-
-                            <li><a href=""><i class="fa fa-facebook"></i></a></li>
-
-                            <li><a href=""><i class="fa fa-twitter"></i></a></li>
-
-                            <li><a href=""><i class="fa fa-google-plus"></i></a></li>
-
-                            <li><a href=""><i class="fa fa-linkedin"></i></a></li>
-
-                        </ul>
-
-                    </div>
-
-                </div>
-
-                <div class="col-md-6">
-
-                    <div class="action pull-right">
-
-                        <ul>
-
-                            <li><a href="Login&Register.jsp"><i class="fa fa-user"></i> Login</a></li>
-
-                            
+                         <li><a href="#"></a>&nbsp;   </li>
+						<c:if test="${sessionScope.acc.isAdmin == 1}">
+			                <li><a href="#"><i class="fa fa-key"></i>&nbsp;Manager Account</a></li>
+			               
+			            </c:if>
+                           <c:if test="${sessionScope.acc.isSell == 1}">
+			                <li><a href="#"><i class="fa fa-calculator"></i>&nbsp;Manager Product</a></li>
+			               
+			            </c:if>
 
                         </ul>
 
                     </div>
 
                 </div>
+
+               <div class="col-md-6">
+			    <div class="action pull-right">
+			        <ul>
+			            <c:if test="${sessionScope.acc != null}">
+			                <li><a href="#"><i class="fa fa-hand-peace-o"></i> Hello ${sessionScope.acc.user}</a></li>
+			                <li><a href="hello"><i class="fa fa-user"></i> Logout</a></li>
+			            </c:if>
+			            <c:if test="${sessionScope.acc == null}">
+			                <li><a href="Login&Register.jsp"><i class="fa fa-user"></i> Login</a></li>
+			            </c:if>
+			        </ul>
+			    </div>
+			</div>
+               
 
             </div>
 
@@ -88,12 +91,16 @@
                 </div>
 
                 <div class="col-md-2 col-sm-3">
-
-                    <div class="cart">
+                
+                
+                <c:if test="${sessionScope.acc != null}">
+			                
+			               <div class="cart">
 
                         <div class="cart-icon">
+                        
 
-                            <a href=""><i class="fa fa-shopping-cart"></i></a>
+                            <a href="cart"><i class="fa fa-shopping-cart"></i></a>
 
                         </div>
 
@@ -103,11 +110,36 @@
 
                             <br>
 
-                            0 items - $0.00
+                       
 
                         </div>
 
                     </div>
+			     </c:if>
+			            <c:if test="${sessionScope.acc == null}">
+			                <div class="cart">
+
+                        <div class="cart-icon">
+                        
+
+                            <a href="Login&Register.jsp"><i class="fa fa-shopping-cart"></i></a>
+
+                        </div>
+
+                        <div class="cart-text">
+
+                            SHOPPING CART
+
+                            <br>
+
+                       
+
+                        </div>
+
+                    </div>
+			            </c:if>
+
+                    
 
                 </div>
 
