@@ -43,24 +43,17 @@ public class updateQuantityServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-				DAO dao=new DAO();
-				response.getWriter().append("Served at: ").append(request.getContextPath());
-				String cartDetailId = request.getParameter("cartDetailId");
-		        String quantityStr = request.getParameter("quantity");
-		        System.out.println("cartDetailId: " + cartDetailId);
-		        System.out.println("quantity: " + quantityStr);
-		        System.out.println("Servlet sửa quantity đã tồn tại");
-		        
-		       
-		        try {
-					dao.updateToTalprice(cartDetailId,quantityStr);
-					 
-					
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					  
-				}
+		DAO dao = new DAO();
+	    String cartDetailId = request.getParameter("cartDetailId");
+	    String quantityStr = request.getParameter("quantity");
+
+	    try {
+	        dao.updateToTalprice(cartDetailId, quantityStr);
+	        response.sendRedirect("UpdateTotalAll");  // Chuyển hướng để cập nhật tổng số lượng
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        response.sendRedirect("error.jsp");
+	    }
 		       
 	}
 
