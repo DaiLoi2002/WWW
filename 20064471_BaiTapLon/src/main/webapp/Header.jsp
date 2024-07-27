@@ -20,9 +20,9 @@
 			               
 			            </c:if>
                            <c:if test="${sessionScope.acc.isSell == 1}">
-			                <li><a href="#"><i class="fa fa-calculator"></i>&nbsp;Manager Product</a></li>
-			               
-			            </c:if>
+							    <li><a href="manager"><i class="fa fa-calculator"></i>&nbsp;Manager Product</a></li>
+							</c:if>
+                           
 
                         </ul>
 

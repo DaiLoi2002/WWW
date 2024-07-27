@@ -74,13 +74,13 @@
                                     </div>
                                     <div class="col-xs-4">
                                         <h4 class="product-name"><strong>${detail.productName}</strong></h4>
-                                        <h4 class="product-name"><strong>Cart Detail ID:${detail.cartDetail_Id}</strong></h4>
+                                       
                                         <h4><small>Product Code:${detail.productId}</small></h4>
                                     </div>
                                     <div class="col-xs-6">
                                         <div class="col-xs-6 text-right">
                                             <h6><strong><fmt:formatNumber value="${detail.unitPrice}" type="number" groupingUsed="true" />VND</strong></h6>
-                                            <h6><strong><fmt:formatNumber value="${detail.totalPrice}" type="number" groupingUsed="true" />VND</strong></h6>
+                                            <h6>Totalprice: <strong><fmt:formatNumber value="${detail.totalPrice}" type="number" groupingUsed="true" />VND</strong></h6>
                                         </div>
                                         <div class="col-xs-4">
                                             <div class="input-group">
@@ -124,10 +124,13 @@
                                 <h4 class="text-right">Total <strong><fmt:formatNumber value="${cart.totalAll}" type="number" groupingUsed="true" />VND</strong></h4>
                             </div>
                             <div class="col-xs-3">
-                                <button type="button" class="btn btn-success btn-block">
-                                    Checkout
-                                </button>
-                            </div>
+					    <form action="CheckOut.jsp" method="get">
+					        <button type="submit" class="btn btn-success btn-block">
+					            Checkout
+					        </button>
+					    </form>
+</div>
+                            
                         </div>
                     </div>
                 </div>

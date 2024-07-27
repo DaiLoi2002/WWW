@@ -413,7 +413,54 @@ public void updateToTalprice(String cartDetailId,String quantityStr) throws SQLE
     }
 }
 
+//////MANAGER DAO
 
+public List<Product> getsearchBYSellID(int id) {
+	
+	List<Product> list = new ArrayList<Product>();
+	
+	
+    String query = " select * from product where sellId = ?";
+   try {
+	   conn = new Database().getConnection();
+	   ps=conn.prepareStatement(query);
+	   ps.setInt(1,id);
+	   rs = ps.executeQuery();
+	   while (rs.next()) {
+		list.add(new Product(rs.getInt(1),
+				rs.getString(2),
+				rs.getString(3),
+				rs.getDouble(4),
+				rs.getString(5),
+				rs.getString(6)
+				));
+		
+	}
+	   
+} catch (Exception e) {
+	// TODO: handle exception
+}
+    
+    return list;
+}
+
+public void DeleteProduct(String pid) {
+	 String query = "  Delete from product where id = ? ";
+	 try {
+		 conn = new Database().getConnection();
+		   ps=conn.prepareStatement(query);
+		   ps.setString(1,pid);
+		   ps.executeUpdate();
+		  
+	} catch (Exception e) {
+		// TODO: handle exception
+	}
+	 
+	
+} void pu() {
+	// TODO Auto-generated method stub
+
+}
 	
 	
 	public static void main(String[] args) throws SQLException {
