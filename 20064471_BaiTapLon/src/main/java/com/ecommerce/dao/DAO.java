@@ -457,10 +457,50 @@ public void DeleteProduct(String pid) {
 	}
 	 
 	
-} void pu() {
-	// TODO Auto-generated method stub
+} 
+public void InsertProduct(String name,String image,String price, String title,String description, String categoryID,int SellID) {
+	 String query = " INSERT INTO product (name, image, price, title, description, cateID, sellId) VALUES (?,?,?,?,?,?,?); ";
+	 try {
+		 conn = new Database().getConnection();
+		   ps=conn.prepareStatement(query);
+		   ps.setString(1,name);
+		   ps.setString(2,image);
+		   ps.setString(3,price);
+		   ps.setString(4,title);
+		   ps.setString(5,description);
+		   ps.setString(6,categoryID);
+		   ps.setInt(7,SellID);
+		   ps.executeUpdate();
+		  
+	} catch (Exception e) {
+		// TODO: handle exception
+	}
+	 
+	
+} 
 
-}
+public void editProduct(String name,String image,String price, String title,String description, String categoryID,String pid) {
+	 String query = " update product set name=?,image=?,price=?,title=?,description=?,cateID=? where id=? ";
+	 try {
+		 conn = new Database().getConnection();
+		   ps=conn.prepareStatement(query);
+		   ps.setString(1,name);
+		   ps.setString(2,image);
+		   ps.setString(3,price);
+		   ps.setString(4,title);
+		   ps.setString(5,description);
+		   ps.setString(6,categoryID);
+		   ps.setString(7,pid);
+		   ps.executeUpdate();
+		  
+	} catch (Exception e) {
+		// TODO: handle exception
+	}
+	 
+	
+} 
+
+
 	
 	
 	public static void main(String[] args) throws SQLException {

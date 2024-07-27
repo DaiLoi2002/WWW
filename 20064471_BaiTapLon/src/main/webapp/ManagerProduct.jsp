@@ -279,7 +279,8 @@ $(document).ready(function(){
                     </div>
                     <div class="col-sm-6">
                         <a href="#addProductModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Product</span></a>
-                        <a href="#deleteProductModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>                        
+                         <a href="HomeControl" class="btn btn-back-home"><i class="material-icons">&#xE88A;</i> <span>Back to Home</span></a>
+                     
                     </div>
                 </div>
             </div>
@@ -314,10 +315,11 @@ $(document).ready(function(){
                             <td><img src="${product.image}" alt="${product.name}" width="50"></td>
                             <td><fmt:formatNumber value="${product.price}" type="number"  groupingUsed="true" /> VND</td>
                             <td>
-                                <a href="#editProductModal" class="edit" data-toggle="modal" data-id="${product.id}" data-name="${product.name}" data-image="${product.image}" data-price="${product.price}"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                               <a href="loadProduct?pid=${product.id}" class="edit" data-toggle="tooltip" title="Edit"><i class="material-icons">&#xE254;</i></a>
+                               
                               <a href="delete?pid=${product.id}" class="delete" data-toggle="tooltip" title="Delete">
-    <i class="material-icons">&#xE872;</i>
-</a>
+								    <i class="material-icons">&#xE872;</i>
+								</a>
                               
                             </td>
                         </tr>
@@ -345,44 +347,44 @@ $(document).ready(function(){
 <div id="addProductModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form>
+            <form action="add" method="post">
                 <div class="modal-header">                        
                     <h4 class="modal-title">Add Product</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">                    
-    <div class="form-group">
-        <label>Name</label>
-        <input name="name" type="text" class="form-control" required>
-    </div>
-    <div class="form-group">
-        <label>Image URL</label>
-        <input name="image" type="text" class="form-control" required>
-    </div>
-    <div class="form-group">
-        <label>Price</label>
-        <input name="price" type="text" class="form-control" required>
-    </div>   
-    <div class="form-group">
-        <label>Title</label>
-        <input name="title" type="text" class="form-control" required>
-    </div>
-    <div  class="form-group">
-        <label>Description</label>
-        <input name="description" type="text" class="form-control" required>
-    </div>
-    <div class="form-group">
-        <label>Category</label>
-        <select name="category" class="form-control" required>
-        <c:forEach  items="${categoryList}" var="o">
-          <option value="${o.cid}">${o.cname}</option>
-        </c:forEach>
-        </select>
-    </div>                 
-</div>
+				    <div class="form-group">
+				        <label>Name</label>
+				        <input name="name" type="text" class="form-control" required>
+				    </div>
+				    <div class="form-group">
+				        <label>Image URL</label>
+				        <input name="image" type="text" class="form-control" required>
+				    </div>
+				    <div class="form-group">
+				        <label>Price</label>
+				        <input name="price" type="text" class="form-control" required>
+				    </div>   
+				    <div class="form-group">
+				        <label>Title</label>
+				        <input name="title" type="text" class="form-control" required>
+				    </div>
+				    <div  class="form-group">
+				        <label>Description</label>
+				        <input name="description" type="text" class="form-control" required>
+				    </div>
+				    <div class="form-group">
+				        <label>Category</label>
+				        <select name="category" class="form-control" required>
+				        <c:forEach  items="${categoryList}" var="o">
+				          <option value="${o.cid}">${o.cname}</option>
+				        </c:forEach>
+				        </select>
+				    </div>                 
+				</div>
                 
                 <div class="modal-footer">
-                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    <a href="manager" class="btn btn-default">Cancel</a>
                     <input type="submit" class="btn btn-success" value="Add">
                 </div>
             </form>
